@@ -13,6 +13,8 @@ import Header from './components/Header';
 import ManageTags from './components/ManageTags';
 import BottomNavigation from './components/BottomNavigation';
 import JournalFilter from './components/JournalFilter';
+import MoodStats from './components/MoodStats';
+import ExportImportControls from './components/ExportImportControls';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -62,6 +64,7 @@ function App() {
                   <Header />
                   <JournalFilter />
                   <JournalEntry />
+                  <MoodStats />
                   <JournalList />
                   <Reminder />
                 </>

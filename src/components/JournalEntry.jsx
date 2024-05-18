@@ -1,6 +1,6 @@
 // src/components/JournalEntry.jsx
 import React, { useState } from 'react';
-import { Box, Input, Textarea, Button, Heading, VStack, useColorModeValue, Select } from '@chakra-ui/react';
+import { Box, Input, Textarea, Button, Heading, VStack, Select, useColorModeValue } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addEntry } from '../store/journalSlice';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,17 +9,19 @@ const JournalEntry = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
+  const [mood, setMood] = useState('');
   const tags = useSelector((state) => state.tags.tags);
   const dispatch = useDispatch();
   const bg = useColorModeValue('white', 'gray.800');
   const color = useColorModeValue('black', 'white');
 
   const saveEntry = () => {
-    const newEntry = { id: uuidv4(), title, content, tag: selectedTag, date: new Date().toISOString() };
+    const newEntry = { id: uuidv4(), title, content, tag: selectedTag, mood, date: new Date().toISOString() };
     dispatch(addEntry(newEntry));
     setTitle('');
     setContent('');
     setSelectedTag('');
+    setMood('');
   };
 
   return (
@@ -44,6 +46,17 @@ const JournalEntry = () => {
           {tags.map((tag) => (
             <option key={tag} value={tag}>{tag}</option>
           ))}
+        </Select>
+        <Select
+          placeholder="Select Mood"
+          value={mood}
+          onChange={(e) => setMood(e.target.value)}
+        >
+          <option value="happy">Happy</option>
+          <option value="sad">Sad</option>
+          <option value="neutral">Neutral</option>
+          <option value="excited">Excited</option>
+          <option value="angry">Angry</option>
         </Select>
         <Button onClick={saveEntry} colorScheme="teal" width="full">Save</Button>
       </VStack>

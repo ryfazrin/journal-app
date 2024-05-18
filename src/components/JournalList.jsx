@@ -34,6 +34,11 @@ const JournalList = () => {
                   <TagLabel>{entry.tag}</TagLabel>
                 </Tag>
               )}
+              {entry.mood && (
+                <Tag mt={2} size="lg" borderRadius="full" variant="solid" colorScheme="purple">
+                  <TagLabel>{entry.mood}</TagLabel>
+                </Tag>
+              )}
               <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>{new Date(entry.date).toLocaleString()}</Text>
               <Button onClick={() => dispatch(deleteEntry(entry.id))} colorScheme="red" mt={2}>Delete</Button>
             </Box>
