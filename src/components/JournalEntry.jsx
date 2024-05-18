@@ -1,22 +1,25 @@
 // src/components/JournalEntry.jsx
 import React, { useState } from 'react';
-import { Box, Input, Textarea, Button, Heading, VStack, useColorModeValue } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
+import { Box, Input, Textarea, Button, Heading, VStack, useColorModeValue, Select } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 import { addEntry } from '../store/journalSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const JournalEntry = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [selectedTag, setSelectedTag] = useState('');
+  const tags = useSelector((state) => state.tags.tags);
   const dispatch = useDispatch();
   const bg = useColorModeValue('white', 'gray.800');
   const color = useColorModeValue('black', 'white');
 
   const saveEntry = () => {
-    const newEntry = { id: uuidv4(), title, content, date: new Date().toISOString() };
+    const newEntry = { id: uuidv4(), title, content, tag: selectedTag, date: new Date().toISOString() };
     dispatch(addEntry(newEntry));
     setTitle('');
     setContent('');
+    setSelectedTag('');
   };
 
   return (
@@ -33,6 +36,15 @@ const JournalEntry = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
+        <Select
+          placeholder="Select Tag"
+          value={selectedTag}
+          onChange={(e) => setSelectedTag(e.target.value)}
+        >
+          {tags.map((tag) => (
+            <option key={tag} value={tag}>{tag}</option>
+          ))}
+        </Select>
         <Button onClick={saveEntry} colorScheme="teal" width="full">Save</Button>
       </VStack>
     </Box>

@@ -10,6 +10,8 @@ import Reminder from './components/Reminder';
 import Login from './components/Login';
 import Register from './components/Register';
 import Header from './components/Header';
+import ManageTags from './components/ManageTags';
+import BottomNavigation from './components/BottomNavigation';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,25 +49,29 @@ function App() {
 
   return (
     <Router>
-      <Container maxW="container.md" p={4} bg={bg} color={color} borderRadius="lg" boxShadow="xl">
-        <Heading mb={4} textAlign="center">Daily Journal</Heading>
-        <Stack spacing={8}>
-          <Routes>
-            <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
-            <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
-            <Route path="/" element={user ? (
-              <>
-                <Header />
-                <JournalEntry />
-                <JournalList />
-                <Reminder />
-              </>
-            ) : (
-              <Navigate to="/login" />
-            )} />
-          </Routes>
-        </Stack>
-      </Container>
+      <Box pb={16}>
+        <Container maxW="container.md" p={4} bg={bg} color={color} borderRadius="lg" boxShadow="xl">
+          <Heading mb={4} textAlign="center">Daily Journal</Heading>
+          <Stack spacing={8}>
+            <Routes>
+              <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+              <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+              <Route path="/" element={user ? (
+                <>
+                  <Header />
+                  <JournalEntry />
+                  <JournalList />
+                  <Reminder />
+                </>
+              ) : (
+                <Navigate to="/login" />
+              )} />
+              <Route path="/manage-tags" element={user ? <ManageTags /> : <Navigate to="/login" />} />
+            </Routes>
+          </Stack>
+        </Container>
+        <BottomNavigation />
+      </Box>
     </Router>
   );
 }

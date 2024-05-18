@@ -1,7 +1,7 @@
 // src/components/JournalList.jsx
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Text, Button, Heading, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Text, Button, Heading, Stack, Tag, TagLabel, useColorModeValue } from '@chakra-ui/react';
 import { deleteEntry } from '../store/journalSlice';
 
 const JournalList = () => {
@@ -19,6 +19,11 @@ const JournalList = () => {
           <Box key={entry.id} p={4} borderWidth={1} borderRadius="lg" boxShadow="md" bg={bg} color={color}>
             <Heading size="md">{entry.title}</Heading>
             <Text mt={2}>{entry.content}</Text>
+            {entry.tag && (
+              <Tag mt={2} size="lg" borderRadius="full" variant="solid" colorScheme="teal">
+                <TagLabel>{entry.tag}</TagLabel>
+              </Tag>
+            )}
             <Text fontSize="sm" color={dateColor}>{new Date(entry.date).toLocaleString()}</Text>
             <Button onClick={() => dispatch(deleteEntry(entry.id))} colorScheme="red" mt={2}>Delete</Button>
           </Box>
@@ -29,3 +34,4 @@ const JournalList = () => {
 };
 
 export default JournalList;
+
