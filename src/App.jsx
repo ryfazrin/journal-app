@@ -12,6 +12,7 @@ import Register from './components/Register';
 import Header from './components/Header';
 import ManageTags from './components/ManageTags';
 import BottomNavigation from './components/BottomNavigation';
+import JournalFilter from './components/JournalFilter';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -59,6 +60,7 @@ function App() {
               <Route path="/" element={user ? (
                 <>
                   <Header />
+                  <JournalFilter />
                   <JournalEntry />
                   <JournalList />
                   <Reminder />

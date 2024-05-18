@@ -6,32 +6,44 @@ import { deleteEntry } from '../store/journalSlice';
 
 const JournalList = () => {
   const entries = useSelector((state) => state.journal.entries);
+  const filter = useSelector((state) => state.journal.filter);
   const dispatch = useDispatch();
   const bg = useColorModeValue('white', 'gray.800');
   const color = useColorModeValue('black', 'white');
-  const dateColor = useColorModeValue('gray.600', 'gray.400');
+
+  const filteredEntries = entries.filter((entry) => {
+    const matchesKeyword = entry.title.toLowerCase().includes(filter.keyword.toLowerCase()) ||
+                           entry.content.toLowerCase().includes(filter.keyword.toLowerCase());
+    const matchesTag = filter.tag ? entry.tag === filter.tag : true;
+    const matchesDate = filter.date ? entry.date.startsWith(filter.date) : true;
+
+    return matchesKeyword && matchesTag && matchesDate;
+  });
 
   return (
     <Box>
       <Heading size="lg" mb={4}>Journal Entries</Heading>
       <Stack spacing={4}>
-        {entries.map((entry) => (
-          <Box key={entry.id} p={4} borderWidth={1} borderRadius="lg" boxShadow="md" bg={bg} color={color}>
-            <Heading size="md">{entry.title}</Heading>
-            <Text mt={2}>{entry.content}</Text>
-            {entry.tag && (
-              <Tag mt={2} size="lg" borderRadius="full" variant="solid" colorScheme="teal">
-                <TagLabel>{entry.tag}</TagLabel>
-              </Tag>
-            )}
-            <Text fontSize="sm" color={dateColor}>{new Date(entry.date).toLocaleString()}</Text>
-            <Button onClick={() => dispatch(deleteEntry(entry.id))} colorScheme="red" mt={2}>Delete</Button>
-          </Box>
-        ))}
+        {filteredEntries.length > 0 ? (
+          filteredEntries.map((entry) => (
+            <Box key={entry.id} p={4} borderWidth={1} borderRadius="lg" boxShadow="md" bg={bg} color={color}>
+              <Heading size="md">{entry.title}</Heading>
+              <Text mt={2}>{entry.content}</Text>
+              {entry.tag && (
+                <Tag mt={2} size="lg" borderRadius="full" variant="solid" colorScheme="teal">
+                  <TagLabel>{entry.tag}</TagLabel>
+                </Tag>
+              )}
+              <Text fontSize="sm" color={useColorModeValue('gray.600', 'gray.400')}>{new Date(entry.date).toLocaleString()}</Text>
+              <Button onClick={() => dispatch(deleteEntry(entry.id))} colorScheme="red" mt={2}>Delete</Button>
+            </Box>
+          ))
+        ) : (
+          <Text>No journal entries found.</Text>
+        )}
       </Stack>
     </Box>
   );
 };
 
 export default JournalList;
-

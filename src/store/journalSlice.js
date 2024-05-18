@@ -3,6 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   entries: JSON.parse(localStorage.getItem('journalEntries')) || [],
+  filter: {
+    keyword: '',
+    tag: '',
+    date: '',
+  },
 };
 
 const journalSlice = createSlice({
@@ -13,21 +18,15 @@ const journalSlice = createSlice({
       state.entries.push(action.payload);
       localStorage.setItem('journalEntries', JSON.stringify(state.entries));
     },
-    editEntry: (state, action) => {
-      const { id, title, content } = action.payload;
-      const existingEntry = state.entries.find((entry) => entry.id === id);
-      if (existingEntry) {
-        existingEntry.title = title;
-        existingEntry.content = content;
-        localStorage.setItem('journalEntries', JSON.stringify(state.entries));
-      }
-    },
     deleteEntry: (state, action) => {
       state.entries = state.entries.filter((entry) => entry.id !== action.payload);
       localStorage.setItem('journalEntries', JSON.stringify(state.entries));
     },
+    setFilter: (state, action) => {
+      state.filter = { ...state.filter, ...action.payload };
+    },
   },
 });
 
-export const { addEntry, editEntry, deleteEntry } = journalSlice.actions;
+export const { addEntry, deleteEntry, setFilter } = journalSlice.actions;
 export default journalSlice.reducer;
