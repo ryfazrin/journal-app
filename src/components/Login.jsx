@@ -1,6 +1,6 @@
 // src/components/Login.jsx
 import React, { useState } from 'react';
-import { Box, Input, Button, VStack, Text, useToast } from '@chakra-ui/react';
+import { Box, Input, Button, VStack, Text, useToast, Heading, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -11,6 +11,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const bg = useColorModeValue('white', 'gray.800');
+  const color = useColorModeValue('black', 'white');
 
   const handleLogin = async () => {
     try {
@@ -45,7 +47,8 @@ const Login = () => {
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg="white">
+    <Box p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg={bg} color={color}>
+      <Heading size="lg" mb={6}>Login</Heading>
       <VStack spacing={4}>
         <Input
           placeholder="Email"

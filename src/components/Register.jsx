@@ -1,6 +1,6 @@
 // src/components/Register.jsx
 import React, { useState } from 'react';
-import { Box, Input, Button, VStack, Text, useToast } from '@chakra-ui/react';
+import { Box, Input, Button, VStack, Text, useToast, Heading, useColorModeValue } from '@chakra-ui/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate, Link } from 'react-router-dom';
@@ -11,6 +11,8 @@ const Register = () => {
   const [error, setError] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
+  const bg = useColorModeValue('white', 'gray.800');
+  const color = useColorModeValue('black', 'white');
 
   const handleRegister = async () => {
     try {
@@ -36,7 +38,8 @@ const Register = () => {
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg="white">
+    <Box p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg={bg} color={color}>
+      <Heading size="lg" mb={6}>Register</Heading>
       <VStack spacing={4}>
         <Input
           placeholder="Email"
