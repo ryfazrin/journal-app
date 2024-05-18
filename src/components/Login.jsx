@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Box, Input, Button, VStack, Text, useToast } from '@chakra-ui/react';
 import { useNavigate, Link } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase';
 
 const Login = () => {
@@ -28,6 +28,22 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/'); // Redirect to home page
+    } catch (error) {
+      toast({
+        title: 'Google login failed.',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box p={4} borderWidth={1} borderRadius="lg" boxShadow="lg" bg="white">
       <VStack spacing={4}>
@@ -43,6 +59,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button onClick={handleLogin} colorScheme="teal" width="full">Login</Button>
+        <Button onClick={handleGoogleLogin} colorScheme="red" width="full">Login with Google</Button>
         {error && <Text color="red.500">{error}</Text>}
         <Text>Belum memiliki akun? <Button variant="link" colorScheme="teal" as={Link} to="/register">Register</Button></Text>
       </VStack>

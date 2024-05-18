@@ -1,9 +1,11 @@
 // src/components/Reminder.jsx
-import { useState, useEffect } from 'react';
-import { Box, Input, Button, Heading, VStack } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Input, Button, Heading, VStack, useColorModeValue } from '@chakra-ui/react';
 
 const Reminder = () => {
   const [time, setTime] = useState('');
+  const bg = useColorModeValue('white', 'gray.800');
+  const color = useColorModeValue('black', 'white');
 
   useEffect(() => {
     if ('Notification' in window && Notification.permission !== 'granted') {
@@ -24,7 +26,7 @@ const Reminder = () => {
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="lg" mt={4} boxShadow="lg" bg="white">
+    <Box p={4} borderWidth={1} borderRadius="lg" mt={4} boxShadow="lg" bg={bg} color={color}>
       <Heading size="md" mb={4}>Set Daily Reminder</Heading>
       <VStack spacing={4}>
         <Input

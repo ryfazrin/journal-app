@@ -1,6 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useState } from 'react';
-import { Box, Heading, Container, Stack, Spinner } from '@chakra-ui/react';
+import { Box, Heading, Container, Stack, Spinner, useColorModeValue } from '@chakra-ui/react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
@@ -14,6 +14,8 @@ import Header from './components/Header';
 function App() {
   const [user, setUser] = useState(null);
   const [authChecked, setAuthChecked] = useState(false);
+  const bg = useColorModeValue('gray.50', 'gray.900');
+  const color = useColorModeValue('black', 'white');
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -37,7 +39,7 @@ function App() {
 
   if (!authChecked) {
     return (
-      <Container maxW="container.md" p={4} bg="gray.50" borderRadius="lg" boxShadow="xl" textAlign="center">
+      <Container maxW="container.md" p={4} bg={bg} color={color} borderRadius="lg" boxShadow="xl" textAlign="center">
         <Spinner size="xl" />
       </Container>
     );
@@ -45,7 +47,7 @@ function App() {
 
   return (
     <Router>
-      <Container maxW="container.md" p={4} bg="gray.50" borderRadius="lg" boxShadow="xl">
+      <Container maxW="container.md" p={4} bg={bg} color={color} borderRadius="lg" boxShadow="xl">
         <Heading mb={4} textAlign="center">Daily Journal</Heading>
         <Stack spacing={8}>
           <Routes>

@@ -1,6 +1,6 @@
 // src/components/JournalEntry.jsx
-import { useState } from 'react';
-import { Box, Input, Textarea, Button, Heading, VStack } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Input, Textarea, Button, Heading, VStack, useColorModeValue } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { addEntry } from '../store/journalSlice';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,6 +9,8 @@ const JournalEntry = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const dispatch = useDispatch();
+  const bg = useColorModeValue('white', 'gray.800');
+  const color = useColorModeValue('black', 'white');
 
   const saveEntry = () => {
     const newEntry = { id: uuidv4(), title, content, date: new Date().toISOString() };
@@ -18,7 +20,7 @@ const JournalEntry = () => {
   };
 
   return (
-    <Box p={4} borderWidth={1} borderRadius="lg" mb={4} boxShadow="lg" bg="white">
+    <Box p={4} borderWidth={1} borderRadius="lg" mb={4} boxShadow="lg" bg={bg} color={color}>
       <Heading size="md" mb={4}>New Journal Entry</Heading>
       <VStack spacing={4}>
         <Input
