@@ -25,8 +25,12 @@ const journalSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = { ...state.filter, ...action.payload };
     },
+    setEntries: (state, action) => {
+      state.entries = action.payload;
+      localStorage.setItem('journalEntries', JSON.stringify(state.entries));
+    }
   },
 });
 
-export const { addEntry, deleteEntry, setFilter } = journalSlice.actions;
+export const { addEntry, deleteEntry, setFilter, setEntries } = journalSlice.actions;
 export default journalSlice.reducer;
