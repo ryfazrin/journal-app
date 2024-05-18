@@ -1,7 +1,7 @@
 // src/components/Login.jsx
 import React, { useState } from 'react';
-import { Box, Input, Button, VStack, Text } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Input, Button, VStack, Text, useToast } from '@chakra-ui/react';
+import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const toast = useToast();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -17,6 +18,13 @@ const Login = () => {
       navigate('/'); // Redirect to home page
     } catch (error) {
       setError('Failed to login. Please check your email and password.');
+      toast({
+        title: 'Login failed.',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -36,6 +44,7 @@ const Login = () => {
         />
         <Button onClick={handleLogin} colorScheme="teal" width="full">Login</Button>
         {error && <Text color="red.500">{error}</Text>}
+        <Text>Belum memiliki akun? <Button variant="link" colorScheme="teal" as={Link} to="/register">Register</Button></Text>
       </VStack>
     </Box>
   );

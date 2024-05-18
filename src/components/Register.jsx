@@ -1,19 +1,37 @@
 // src/components/Register.jsx
 import React, { useState } from 'react';
-import { Box, Input, Button, VStack } from '@chakra-ui/react';
+import { Box, Input, Button, VStack, Text, useToast } from '@chakra-ui/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      // Redirect or perform any post-registration actions
+      toast({
+        title: 'Registration successful.',
+        description: 'You have successfully registered. Please log in.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate('/login');
     } catch (error) {
-      console.error('Error registering:', error);
+      setError('Failed to register. Please try again.');
+      toast({
+        title: 'Registration failed.',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -32,6 +50,8 @@ const Register = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button onClick={handleRegister} colorScheme="teal" width="full">Register</Button>
+        {error && <Text color="red.500">{error}</Text>}
+        <Text>Sudah memiliki akun? <Button variant="link" colorScheme="teal" as={Link} to="/login">Login</Button></Text>
       </VStack>
     </Box>
   );
