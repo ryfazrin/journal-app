@@ -10,18 +10,41 @@ const JournalEntry = () => {
   const [content, setContent] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
   const [mood, setMood] = useState('');
+  const [attachment, setAttachment] = useState(null);
   const tags = useSelector((state) => state.tags.tags);
   const dispatch = useDispatch();
   const bg = useColorModeValue('white', 'gray.800');
   const color = useColorModeValue('black', 'white');
 
+  const handleAttachmentChange = (e) => {
+    setAttachment(e.target.files[0]);
+  };
+
   const saveEntry = () => {
-    const newEntry = { id: uuidv4(), title, content, tag: selectedTag, mood, date: new Date().toISOString() };
-    dispatch(addEntry(newEntry));
-    setTitle('');
-    setContent('');
-    setSelectedTag('');
-    setMood('');
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const newEntry = {
+        id: uuidv4(),
+        title,
+        content,
+        tag: selectedTag,
+        mood,
+        attachment: reader.result,
+        attachmentName: attachment ? attachment.name : null,
+        date: new Date().toISOString()
+      };
+      dispatch(addEntry(newEntry));
+      setTitle('');
+      setContent('');
+      setSelectedTag('');
+      setMood('');
+      setAttachment(null);
+    };
+    if (attachment) {
+      reader.readAsDataURL(attachment);
+    } else {
+      reader.onloadend();
+    }
   };
 
   return (
@@ -58,6 +81,7 @@ const JournalEntry = () => {
           <option value="excited">Excited</option>
           <option value="angry">Angry</option>
         </Select>
+        <Input type="file" accept="image/*" onChange={handleAttachmentChange} />
         <Button onClick={saveEntry} colorScheme="teal" width="full">Save</Button>
       </VStack>
     </Box>
